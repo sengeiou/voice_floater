@@ -23,7 +23,8 @@ public class TencentCloudUtil {
     @Value("${tx.requestUrl}")
     private String requestUrl;
 
-    private final Credential cred = new Credential("AKID33lCMKTtZz80bvRkHXWqsdJj7F4btIEt", "YaLq44nENFsNu98qHQIWR5RVO6XhgcHe");
+    // 你自己的腾讯云用户名和密钥
+    private final Credential cred = new Credential("", "");
 
     /**
      * 语音文件识别
