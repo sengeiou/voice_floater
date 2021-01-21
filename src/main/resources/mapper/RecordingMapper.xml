@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gydx.mapper.RecordingMapper">
+
+    <resultMap id="recording" type="com.gydx.entity.Recording">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="url" column="url"/>
+        <result property="status" column="status"/>
+        <association property="user" column="userId" select="com.gydx.mapper.UserMapper.findById"/>
+    </resultMap>
+
+    <insert id="save" parameterType="com.gydx.entity.Recording" keyProperty="id" useGeneratedKeys="true">
+        insert into recording (url, user_id, type)
+        values (#{url}, #{userId}, #{type})
+    </insert>
+    <update id="submit">
+        update recording r
+        set r.user_id = #{userId}
+        where id = #{recordingId}
+    </update>
+    <select id="findById" resultMap="recording" parameterType="string">
+        select r.url, r.user_id, r.id
+        from recording r
+        where r.id = #{recordingId}
+    </select>
+    <select id="findIdListByUserId" resultType="string" parameterType="string">
+        select id
+        from recording
+        where user_id = #{userId}
+    </select>
+    <select id="findAll" resultMap="recording">
+        select * from recording
+    </select>
+    <select id="findByUserId" resultType="com.gydx.entity.Recording">
+        select r.id, r.url from recording r where r.user_id = #{userId}
+    </select>
+
+</mapper>

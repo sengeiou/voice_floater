@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gydx.mapper.UserRoleMapper">
+
+    <resultMap id="user" type="com.gydx.entity.User">
+        <id property="id" column="id"/>
+        <result property="status" column="status"/>
+        <result property="lastTime" column="last_time"/>
+        <result property="sessionKey" column="session_key"/>
+        <result property="openId" column="open_id"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="prohibitDays" column="prohibit_day"/>
+        <result property="prohibitTime" column="prohibit_time"/>
+    </resultMap>
+
+    <resultMap id="role" type="com.gydx.entity.Role">
+        <id property="id" column="id"/>
+        <result property="status" column="status"/>
+        <result property="description" column="description"/>
+        <result property="roleName" column="role_name"/>
+    </resultMap>
+
+    <insert id="add">
+        insert into user_role (user_id, role_id)
+        VALUES (#{userId}, #{roleId})
+    </insert>
+
+    <select id="findAllRoleByUserId" resultMap="role">
+        select r.id, r.description, r.role_name, r.status
+        from role r,
+             user_role ur
+        where r.id = ur.role_id
+          and ur.user_id = #{userId}
+    </select>
+    <select id="findAllUserByRoleId" resultMap="user">
+        select u.id,
+               u.nick_name,
+               u.open_id,
+               u.session_key,
+               u.last_time,
+               u.status,
+               u.prohibit_time,
+               u.prohibit_days
+        from user u,
+             user_role ur
+        where u.id = ur.user_id
+          and ur.role_id = #{roleId}
+    </select>
+
+
+</mapper>

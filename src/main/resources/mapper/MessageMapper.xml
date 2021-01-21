@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gydx.mapper.MessageMapper">
+    <insert id="addBatch" parameterType="list">
+        insert into message (user_from_id, user_to_id, recording_id, content, queue, send_time) VALUES
+        <foreach collection="messages" separator="," index="index" item="message">
+            (#{message.userFromId}, #{message.userToId}, #{message.recordingId}, #{message.content},
+            #{message.queue}, #{message.sendTime})
+        </foreach>
+    </insert>
+    <select id="findBUserToId" resultType="com.gydx.entity.Message">
+        select *
+        from message
+        where user_from_id is null
+          and user_to_id = #{userToId}
+    </select>
+</mapper>

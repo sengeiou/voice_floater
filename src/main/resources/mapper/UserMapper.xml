@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gydx.mapper.UserMapper">
+
+    <resultMap id="user" type="com.gydx.entity.User">
+        <id property="id" column="id"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="openId" column="open_id"/>
+        <result property="sessionKey" column="session_key"/>
+        <result property="lastTime" column="last_time"/>
+        <collection property="roles" select="com.gydx.mapper.UserRoleMapper.findAllRoleByUserId" column="id"/>
+    </resultMap>
+
+    <select id="findById" parameterType="string" resultMap="user">
+        select u.id, u.nick_name from user u where u.id = #{userId}
+    </select>
+
+    <insert id="add" parameterType="com.gydx.entity.User" useGeneratedKeys="true" keyProperty="id">
+        insert into user (nick_name, open_id, session_key, last_time)
+        values (#{nickName}, #{openId}, #{sessionKey}, #{lastTime})
+    </insert>
+    <update id="update" parameterType="com.gydx.entity.User">
+        update user
+        set nick_name   = #{nickName},
+            session_key = #{sessionKey},
+            last_time   = #{lastTime}
+        where id = #{id}
+    </update>
+
+    <update id="setUTF">
+        SET NAMES utf8mb4
+    </update>
+
+    <select id="findByOpenId" resultMap="user" parameterType="string">
+        select u.id, u.status
+        from user u
+        where u.open_id = #{openId}
+    </select>
+    <select id="findAllId" resultType="string">
+        select id from user
+    </select>
+</mapper>

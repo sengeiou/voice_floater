@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gydx.mapper.QueueMapper">
+
+    <resultMap id="queue" type="com.gydx.entity.Queue">
+        <id property="id" column="id"/>
+        <result property="queueName" column="queue_name"/>
+        <result property="userFromId" column="user_from_id"/>
+        <result property="userToId" column="user_to_id"/>
+        <association property="userFrom" column="user_from_id" select="com.gydx.mapper.UserMapper.findById"/>
+        <association property="userTo" column="user_to_id" select="com.gydx.mapper.UserMapper.findById"/>
+    </resultMap>
+
+    <insert id="add" parameterType="com.gydx.entity.Queue">
+        insert into queue (queue_name, user_from_id, user_to_id)
+        values (#{queueName}, #{userFromId}, #{userToId})
+    </insert>
+    <select id="findByName" resultMap="queue" parameterType="string">
+        select *
+        from queue
+        where queue_name = #{queueName}
+    </select>
+    <select id="findAll" resultMap="queue">
+        select *
+        from queue
+    </select>
+    <select id="findAllChatByUserFromId" parameterType="string" resultType="com.gydx.entity.Queue">
+        select id, queue_name as queueName, user_from_id as userFromId, user_to_id as userToId
+        from queue
+        where user_from_id = #{userFromId}
+          and user_to_id is not null
+    </select>
+    <select id="findAllChatWithUserByUserId" parameterType="string" resultMap="queue">
+        select *
+        from queue
+        where (user_from_id = #{userId}
+            and user_to_id is not null)
+           or (user_to_id = #{userId} and user_from_id is not null)
+    </select>
+</mapper>

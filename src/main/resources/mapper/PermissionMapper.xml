@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gydx.mapper.PermissionMapper">
+
+    <resultMap id="permission" type="com.gydx.entity.Permission">
+        <id property="id" column="id"/>
+        <result property="permissionName" column="permission_name"/>
+        <result property="index" column="index"/>
+        <result property="type" column="type"/>
+        <result property="icon" column="icon"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="description" column="description"/>
+        <result property="title" column="title"/>
+        <result property="available" column="available"/>
+        <association property="children" column="id" select="com.gydx.mapper.PermissionMapper.getPermissionByParentId"/>
+    </resultMap>
+
+    <select id="getPermissionByParentId" resultMap="permission" parameterType="int">
+        select * from permission where parent_id  = #{parentId}
+    </select>
+</mapper>

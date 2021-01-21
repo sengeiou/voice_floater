@@ -1,0 +1,37 @@
+server:
+  port: 8088
+  servlet:
+    context-path: /
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 你自己的mysql username
+    username:
+    # 你自己的mysql url
+    url: 
+    # 你自己的mysql password
+    password:
+
+  redis:
+    # 你自己的redis的host
+    host:
+    port: 6379
+    # 你自己的redis的密码
+    password:
+    timeout: 10000
+    jedis:
+      pool:
+        max-active: 8 # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: -1ms # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 8 # 连接池中的最大空闲连接
+        min-idle: 0 # 连接池中的最小空闲连接
+
+logging:
+  level:
+    com.gydx.mapper: debug
+
+
+mybatis:
+  type-aliases-package: com.gydx.entity
+  mapper-locations: classpath:mapper/*Mapper.xml,classpath:mapper/admin/*Mapper.xml

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gydx.mapper.RolePermissionMapper">
+
+    <resultMap id="role" type="com.gydx.entity.Role">
+        <id property="id" column="id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="description" column="description"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <resultMap id="permission" type="com.gydx.entity.Permission">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="description" column="description"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="icon" column="icon"/>
+        <result property="available" column="available"/>
+        <result property="index" column="index"/>
+        <result property="permissionName" column="permission_name"/>
+        <result property="type" column="type"/>
+    </resultMap>
+
+    <select id="findPermissionByRoleId" parameterType="int" resultMap="permission">
+        select p.* from role_permission rp, permission p where p.id = rp.permission_id
+        and rp.role_id = #{roleId}
+    </select>
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gydx.mapper.admin.UserAdminMapper">
+
+    <resultMap id="user" type="com.gydx.entity.User">
+        <id property="id" column="id"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="openId" column="open_id"/>
+        <result property="sessionKey" column="session_key"/>
+        <result property="lastTime" column="last_time"/>
+        <collection property="roles" select="com.gydx.mapper.UserRoleMapper.findAllRoleByUserId" column="id"/>
+    </resultMap>
+    <update id="update" parameterType="com.gydx.entity.User">
+        update user
+        <set>
+            <if test="nickName != null"> nick_name = #{nickName}, </if>
+            <if test="password != null"> password = #{password}, </if>
+            <if test="lastTime != null"> last_time = #{lastTime} </if>
+        </set>
+        where 1 = 1 and id = #{id}
+    </update>
+
+    <select id="findAll" resultMap="user">
+        select * from user
+    </select>
+    <select id="findByNickName" resultMap="user">
+        select id, password, last_time from user where nick_name = #{nickName}
+    </select>
+
+</mapper>
